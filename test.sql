@@ -41,12 +41,6 @@ CREATE TABLE IF NOT EXISTS `allocations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
---
--- Dumping data for table `allocations`
---
-
-INSERT INTO `allocations` (`id`, `emp_id`, `pid`, `location`, `city`, `role`, `rate`, `start_dt`, `end_dt`) VALUES
-(2, 12925, 98000, 'Offshore', 'Mumbai', 'Project Manager', 50, '2016-03-01', '2016-12-31');
 
 -- --------------------------------------------------------
 
@@ -61,18 +55,6 @@ CREATE TABLE IF NOT EXISTS `employees` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `employees`
---
-
-INSERT INTO `employees` (`id`, `name`) VALUES
-(12925, 'Gaurav'),
-(12926, 'Anuj'),
-(12927, 'Abhinav'),
-(12928, 'Amey');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `holidays`
 --
 
@@ -85,15 +67,6 @@ CREATE TABLE IF NOT EXISTS `holidays` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
---
--- Dumping data for table `holidays`
---
-
-INSERT INTO `holidays` (`id`, `city`, `start_dt`, `end_dt`, `description`) VALUES
-(1, 'Sydney', '2016-02-26', '2016-02-26', ''),
-(2, 'Mumbai', '2016-03-14', '2016-03-14', '');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `leaves`
@@ -110,9 +83,6 @@ CREATE TABLE IF NOT EXISTS `leaves` (
 --
 -- Dumping data for table `leaves`
 --
-
-INSERT INTO `leaves` (`id`, `emp_id`, `start_dt`, `end_dt`) VALUES
-(2, 12925, '2016-03-01', '2016-03-29');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
