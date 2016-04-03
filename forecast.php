@@ -12,8 +12,9 @@ Resourcewise Forecast
 <div id="content">
 	<div id="nav">
 		<ul>
-			<li> <a href="resources.php"> Manage Resources </a></li>
-			<li> <a href="leaves.php"> Manage Resource Leaves </a></li>
+			<li> <a href="employees.php"> Manage Employees </a></li>
+			<li> <a href="allocations.php"> Manage Allocations </a></li>
+			<li> <a href="leaves.php"> Manage Leaves </a></li>
 			<li> <a href="holidays.php"> Manage Public Holidays </a></li>
 			<li> <a href="forecast.php"> View Forecast </a></li>
 		</ul>
@@ -26,15 +27,16 @@ Resourcewise Forecast
 	<br><br>
 	<h3>Resourcewise Forecast</h3>
 	<?php
-		$employees = mysql_query("select * from employees order by pid");
+		$allocations = mysql_query("select * from allocations order by pid");
 		$leaves = mysql_query("select * from leaves order by start_dt");
 		$holidays = mysql_query("select * from holidays order by start_dt");
 		
+		$totalHours = 0;
 		$totalAmt = 0;
 		$workHours = array(0,0,0,0,0,0,0,0,0,0,0,0);
 		//$leaveHours = array(0,0,0,0,0,0,0,0,0,0,0,0);	
 		
-		echo "<table>";
+		echo "<div style='font:8pt Arial'><table>";
 		echo "<tr>
 				<th>PID</th>
 				<th>Emp Id</th>
@@ -48,14 +50,26 @@ Resourcewise Forecast
 				<th>Jan</th>
 				<th>Feb</th>
 				<th>Mar</th>
-				<th>Total Q1 <br>hours</th>
-				<th>Total Q1 <br>amount</th>
+				<th>Apr</th>
+				<th>May</th>
+				<th>Jun</th>
+				<th>Jul</th>
+				<th>Aug</th>
+				<th>Sep</th>
+				<th>Oct</th>
+				<th>Nov</th>
+				<th>Dec</th>
+				<th>Total <br>Hours</th>
+				<th>Total <br>Amount</th>
 			 </tr>";
 		
 		
-		while ($row = mysql_fetch_array($employees)) {	
+		while ($row = mysql_fetch_array($allocations)) {	
 			
-			$workDays= 0;			
+			$workDays= 0;
+			
+			$employee = mysql_query("select * from employees where id = ".$row{'emp_id'}." limit 1");
+			$emp_row = mysql_fetch_array($employee);
 			
 			$start = date_create($row{'start_dt'});
 			$end = date_create($row{'end_dt'});
@@ -68,11 +82,20 @@ Resourcewise Forecast
 			$workHours['Jan'] = 0;
 			$workHours['Feb'] = 0;
 			$workHours['Mar'] = 0;
+			$workHours['Apr'] = 0;
+			$workHours['May'] = 0;
+			$workHours['Jun'] = 0;
+			$workHours['Jul'] = 0;
+			$workHours['Aug'] = 0;
+			$workHours['Sep'] = 0;
+			$workHours['Oct'] = 0;
+			$workHours['Nov'] = 0;
+			$workHours['Dec'] = 0;
 			do
 			{
 				if (date_format($start, 'D') != "Sat" && date_format($start, 'D') !="Sun")
 				{
-					//Now check if it's not a public holiday or an employee's leave
+					//Now check if it's not a public holiday or the employee's leave
 					$month = date_format($start, 'M');
 					
 					$workHours[$month]=$workHours[$month]+8;
@@ -84,7 +107,7 @@ Resourcewise Forecast
 			echo "<tr>
 					<td>".$row{'pid'}."</td>
 					<td>".$row{'emp_id'}."</td>
-					<td>".$row{'name'}."</td>
+					<td>".$emp_row{'name'}."</td>
 					<td>".$row{'location'}."</td>
 					<td>".$row{'city'}."</td>
 					<td>".$row{'role'}."</td>
@@ -94,13 +117,23 @@ Resourcewise Forecast
 					<td>".$workHours['Jan']."</td>
 					<td>".$workHours['Feb']."</td>
 					<td>".$workHours['Mar']."</td>
-					<td>".($workDays*8)."</td>
-					<td> $".number_format(($workDays*8*$row{'rate'}),2)."</td>
+					<td>".$workHours['Apr']."</td>
+					<td>".$workHours['May']."</td>
+					<td>".$workHours['Jun']."</td>
+					<td>".$workHours['Jul']."</td>
+					<td>".$workHours['Aug']."</td>
+					<td>".$workHours['Sep']."</td>
+					<td>".$workHours['Oct']."</td>
+					<td>".$workHours['Nov']."</td>
+					<td>".$workHours['Dec']."</td>					
+					<td class='summary'>".($workDays*8)."</td>
+					<td class='summary'> $".number_format(($workDays*8*$row{'rate'}),2)."</td>
 				</tr>";
+				$totalHours = $totalHours + ($workDays*8);
 				$totalAmt = $totalAmt + ($workDays*8*$row{'rate'});
 		}
 		//Print totals row
-		echo "<tr>
+		echo "<tr class='summaryTotal'>
 				<td>Total</td>
 				<td></td>
 				<td></td>
@@ -114,8 +147,17 @@ Resourcewise Forecast
 				<td></td>
 				<td></td>
 				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td> ".$totalHours."</td>				
 				<td> $".number_format($totalAmt,2)."</td>";
-		echo "</table>";
+		echo "</table></div>";
 		mysql_close($dbhandle);		
 	?>
 	</div>

@@ -1,5 +1,5 @@
 body{
-	/*background-color: #EEE;*/
+	background-color: #EEE;
 	font-family: sans-serif;
 	font-size: 13px;
 }
@@ -10,17 +10,18 @@ body{
 
 #content{
 	
+	
 }
 
 #main{
 	margin: 5px;
+	
 }
 
 #nav{
-	background-color: #CBDCF7; 
+	background-color: #CBDCF7;
 	font-size: 14px;
-	font-weight:bold;
-	margin: 0px;
+	margin:0px 5px 5px 5px;
 	overflow: hidden;
 }
 
@@ -44,9 +45,8 @@ li a {
 }
 
 li a:hover {
-    background-color: #F7E6CB;
-	/*background-color: #cbf7d0;*/
-	background-color: #a7c3f1;
+    /*background-color: #F7E6CB;*/
+	background-color: #cbf7d0;
 }
 
 #header{
@@ -54,7 +54,7 @@ li a:hover {
 	color: white;
 	font-size: 20px;
 	padding:10px;
-	margin: 0px;
+	margin:5px 5px 0px 5px;
 	text-align: center;
 	font-weight: bold;
 }
@@ -65,32 +65,17 @@ li a:hover {
 }
 table {
   border-collapse: collapse;
-  width: auto;
+ /* width: 50%;*/
+ width: auto;
 }
 th, td {
   padding: 5px;
   text-align: center;
   border: 1px solid #ccc;
-  font-size: 12px;
+  font-size: 14px;
 }
 th{
 	background-color: #CBDCF7;
 }
 h3{
-}
-.invisible
-{
-	border: 0px;
-	text-align: right;
-}
-.summary
-{
-	background-color:#eee;
-}
-
-.summaryTotal td
-{
-	background-color:#CBDCF7;
-	padding:3px;
-	font-weight: bold;
 }

@@ -12,8 +12,9 @@ Resourcewise Forecast
 <div id="content">
 	<div id="nav">
 		<ul>
-			<li> <a href="resources.php"> Manage Resources </a></li>
-			<li> <a href="leaves.php"> Manage Resource Leaves </a></li>
+			<li> <a href="employees.php"> Manage Employees </a></li>
+			<li> <a href="allocations.php"> Manage Allocations </a></li>
+			<li> <a href="leaves.php"> Manage Leaves </a></li>
 			<li> <a href="holidays.php"> Manage Public Holidays </a></li>
 			<li> <a href="forecast.php"> View Forecast </a></li>
 		</ul>
@@ -21,24 +22,47 @@ Resourcewise Forecast
 	<div id="main">
 	<?php 
 		include_once('dbconnection.php');
-		//if $_POST['command'] == "addLeave"
+		if (isset($_GET['action']))
+		{
+			if ($_GET['action'] == "delete" && isset($_GET['id']))
+			{
+				$sql = "delete from employees where id = ".$_GET['id']." limit 1";
+				$retval = mysql_query($sql,$dbhandle);
+				if(! $retval)
+				{
+				   die('Could not delete data: ' . mysql_error());
+				}
+			}
+		}
+		if (isset($_POST['action']))
+		{
+			if($_POST['action'] == "add")
+			{
+				$sql = "insert into employees (id, name) values(".$_POST['id'].",'".$_POST['name']."')";
+				$retval = mysql_query($sql,$dbhandle);
+				if(! $retval)
+				{
+				   die('Could not insert data: ' . mysql_error());
+				}
+			}
+		}
+
 	?>
 	<div align=center>
 	<br><br>
 	<h3>Add Employee</h3>
-	<form id="add" method="post" action="leaves.php">
+	<form id="add" method="post" action="employees.php">
 		<input type="text" name="id" placeholder="Enter Employee Id"/>&nbsp;&nbsp;<br>
-		<input type="text" name="start_dt" placeholder="Enter Start Date"/>&nbsp;&nbsp;<br>
-		<input type="text" name="end_dt" placeholder="Enter End Date"/>&nbsp;&nbsp;<br>
-		<input type="hidden" name="command" value="addLeave"/><br>
-		<input type="submit" value="Submit"/>
+		<input type="text" name="name" placeholder="Enter Name"/>&nbsp;&nbsp;<br>
+		<input type="hidden" name="action" value="add"/><br>
+		<input type="submit" value="Save"/>
 	</form><br><br><br>
 	<h3>Current Employees</h3>
 	<?php
-		$result = mysql_query("select a.id, b.name, a.start_dt, a.end_dt from leaves a, employees b where a.id = b.id");
+		$result = mysql_query("select id, name from employees");
 		if (mysql_num_rows($result) == 0)
 		{
-			echo "No resource leaves found";
+			echo "No employees found";
 		}
 		else
 		{
@@ -46,18 +70,14 @@ Resourcewise Forecast
 			echo "<tr>
 					<th>Employee Id</th>
 					<th>Name</th>
-					<th>Start Date</th>
-					<th>End Date</th>
-					<th></th>
+					<th>Action</th>
 				 </tr>";
 			while ($row = mysql_fetch_array($result)) {			
 			   echo 
 			   "<tr>
 			   <td>".$row{'id'}."</td>
 			   <td>".$row{'name'}."</td>
-			   <td>".$row{'start_dt'}."</td>			   
-			   <td>".$row{'end_dt'}."</td>
-			   <td><a href=leaves.php?action=delete&id=".$row{'id'}.">Delete</a></td>
+			   <td><a href=employees.php?action=delete&id=".$row{'id'}.">Delete</a></td>
 			   </tr>";
 			}
 			echo "</table>";
