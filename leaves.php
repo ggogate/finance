@@ -13,8 +13,9 @@ Resourcewise Forecast
 <div id="content">
 	<div id="nav">
 		<ul>
-			<li> <a href="resources.php"> Manage Resources </a></li>
-			<li> <a href="leaves.php"> Manage Resource Leaves </a></li>
+			<li> <a href="employees.php"> Manage Employees </a></li>
+			<li> <a href="allocations.php"> Manage Allocations </a></li>
+			<li> <a href="leaves.php"> Manage Leaves </a></li>
 			<li> <a href="holidays.php"> Manage Public Holidays </a></li>
 			<li> <a href="forecast.php"> View Forecast </a></li>
 		</ul>
@@ -61,7 +62,7 @@ Resourcewise Forecast
 	</form><br><br><br>
 	<h3>Current Leaves</h3>
 	<?php
-		$result = mysql_query("SELECT a.emp_id, b.name, a.start_dt, a.end_dt from leaves a LEFT JOIN employees b ON a.emp_id = b.emp_id");
+		$result = mysql_query("SELECT a.emp_id, b.name, a.start_dt, a.end_dt from leaves a, employees b where a.emp_id = b.id");
 		if (mysql_num_rows($result) == 0)
 		{
 			echo "No resource leaves found";

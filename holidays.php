@@ -12,8 +12,9 @@ Resourcewise Forecast
 <div id="content">
 	<div id="nav">
 		<ul>
-			<li> <a href="resources.php"> Manage Resources </a></li>
-			<li> <a href="leaves.php"> Manage Resource Leaves </a></li>
+			<li> <a href="employees.php"> Manage Employees </a></li>
+			<li> <a href="allocations.php"> Manage Allocations </a></li>
+			<li> <a href="leaves.php"> Manage Leaves </a></li>
 			<li> <a href="holidays.php"> Manage Public Holidays </a></li>
 			<li> <a href="forecast.php"> View Forecast </a></li>
 		</ul>
