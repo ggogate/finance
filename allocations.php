@@ -23,6 +23,11 @@
 				createOption(dd2,"Pune","Pune");
 				createOption(dd2,"Chennai","Chennai");
 				break;
+			case "Offsite":
+				dd2.options.length = 0;
+				createOption(dd2,"Phoenix","Phoenix");
+				createOption(dd2,"Miami","Miami");
+				break;
 			default :
 				dd2.options.length = 0;
 				break;
@@ -105,6 +110,7 @@ Resourcewise Forecast
 	<table>
 		<tr>
 			<th>Emp Id</th>
+			<th>Emp Name</th>
 			<th>PID</th>
 			<th>Location</th>
 			<th>City</th>
@@ -115,11 +121,13 @@ Resourcewise Forecast
 		</tr>
 		<tr>
 			<td><input type="text" size=10 name="id" /></td>
+			<td></td>			
 			<td><input type="text" size=5 name="pid" /></td>
 			<td><select name="location" id="dd_location" onchange="configureCities(this, document.getElementById('dd_city'));">
 				<option value="none">--select--</option>
-				<option value="Onshore">On-shore</option>
-				<option value="Offshore">Off-shore</option>
+				<option value="Onshore">Onshore</option>
+				<option value="Offshore">Offshore</option>
+				<option value="Offsite">Offsite</option>
 			</select></td>
 			<td><select name="city" id="dd_city">
 			</select></td>
