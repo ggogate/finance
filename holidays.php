@@ -29,8 +29,8 @@ Resourcewise Forecast
 	<br><br>
 	<h3>List of holidays</h3>
 	<?php
-		$result = mysql_query("select id, description, city, MONTHNAME(start_dt), start_dt, end_dt from holidays order by start_dt");
-		if (mysql_num_rows($result) == 0)
+		$result = mysqli_query($dbhandle, "select id, description, city, MONTHNAME(start_dt), start_dt, end_dt from holidays order by start_dt");
+		if (mysqli_num_rows($result) == 0)
 		{
 			echo "No public holidays found";
 		}
@@ -44,7 +44,7 @@ Resourcewise Forecast
 					<th>City</th>
 					<th>Description</th>
 				 </tr>";
-			while ($row = mysql_fetch_array($result)) {			
+			while ($row = mysqli_fetch_array($result)) {			
 			   echo 
 			   "<tr>
 			   <td>".$row['MONTHNAME(start_dt)']."</td>
@@ -56,7 +56,7 @@ Resourcewise Forecast
 			}
 			echo "</table>";
 		}
-		mysql_close($dbhandle);		
+		mysqli_close($dbhandle);		
 	?>
 	</div>
 	</div>

@@ -2,11 +2,47 @@
 <head>
 	<title> Resourcewise Forecast </title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>	
-	
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>
-	function doSomething(){
-		alert("hehehe");
-	};
+	$( function() {
+		$( ".datepicker" ).datepicker(
+			{dateFormat: "yy-mm-dd"}
+		);
+	} );
+	function configureCities(dd1, dd2){
+		switch(dd1.value){
+			case "Onshore":
+				dd2.options.length = 0;
+				createOption(dd2,"Phoenix","Phoenix");
+				createOption(dd2,"Miami","Miami");
+				break;
+			case "Offshore":
+				dd2.options.length = 0;
+				createOption(dd2,"Mumbai","Mumbai");
+				createOption(dd2,"Pune","Pune");
+				createOption(dd2,"Chennai","Chennai");
+				break;
+			default :
+				dd2.options.length = 0;
+				break;
+		};
+		
+	}
+	/*
+				<option value="none">--select--</option>
+				<option value="Mumbai">Mumbai</option>
+				<option value="Pune">Pune</option>
+				<option value="Chennai">Chennai</option>
+				<option value="Phoenix">Phoenix</option>
+	*/
+	function createOption(ddl, text, value) {
+        var opt = document.createElement('option');
+        opt.value = value;
+        opt.text = text;
+        ddl.options.add(opt);
+    }
+	
 	</script>
 </head>
 
@@ -33,10 +69,10 @@ Resourcewise Forecast
 			if ($_GET['action'] == "delete" && isset($_GET['id']))
 			{
 				$sql = "delete from allocations where emp_id = ".$_GET['id']." and pid = ".$_GET['pid']." limit 1";
-				$retval = mysql_query($sql,$dbhandle);
+				$retval = mysqli_query($dbhandle, $sql);
 				if(! $retval)
 				{
-				   die('Could not delete data: ' . mysql_error());
+				   die('Could not delete data: ' . mysqli_error($dbhandle));
 				}
 			}
 		}
@@ -54,10 +90,10 @@ Resourcewise Forecast
 				.$_POST['start_dt']."','"
 				.$_POST['end_dt'].		
 				"')";
-				$retval = mysql_query($sql,$dbhandle);
+				$retval = mysqli_query($dbhandle, $sql);
 				if(! $retval)
 				{
-				   die('Could not insert data: ' . mysql_error());
+				   die('Could not insert data: ' . mysqli_error($dbhandle));
 				}
 			}
 		}
@@ -80,17 +116,12 @@ Resourcewise Forecast
 		<tr>
 			<td><input type="text" size=10 name="id" /></td>
 			<td><input type="text" size=5 name="pid" /></td>
-			<td><select name="location" onclick="doSomething();">
-				<option value="offshore">--select--</option>
+			<td><select name="location" id="dd_location" onchange="configureCities(this, document.getElementById('dd_city'));">
+				<option value="none">--select--</option>
 				<option value="Onshore">On-shore</option>
 				<option value="Offshore">Off-shore</option>
 			</select></td>
-			<td><select name="city">
-				<option value="none">--select--</option>
-				<option value="Mumbai">Mumbai</option>
-				<option value="Pune">Pune</option>
-				<option value="Chennai">Chennai</option>
-				<option value="Phoenix">Phoenix</option>
+			<td><select name="city" id="dd_city">
 			</select></td>
 			<td><select name="role">
 				<option value="none">--select--</option>
@@ -105,8 +136,8 @@ Resourcewise Forecast
 				<option value="Programmer">Programmer</option>
 			</select></td>
 			<td><input type="text" size=5 name="rate" /></td>
-			<td><input type="text" size=10 name="start_dt" /></td>
-			<td><input type="text" size=10 name="end_dt"/></td>
+			<td><input type="text" size=10 name="start_dt" class="datepicker" autocomplete="off" /></td>
+			<td><input type="text" size=10 name="end_dt" class="datepicker" autocomplete="off" /></td>
 		</tr>
 	</table><br>
 	<input type="hidden" name="action" value="add"/>
@@ -114,8 +145,8 @@ Resourcewise Forecast
 	</form><br><br><br>
 	<h3>Current Assignments</h3>
 	<?php
-		$result = mysql_query("select a.pid, a.emp_id, b.name, a.location, a.city, a.role, a.rate, a.start_dt, a.end_dt from allocations a, employees b where a.emp_id = b.id");
-		if (mysql_num_rows($result) == 0)
+		$result = mysqli_query($dbhandle, "select a.pid, a.emp_id, b.name, a.location, a.city, a.role, a.rate, a.start_dt, a.end_dt from allocations a, employees b where a.emp_id = b.id");
+		if (mysqli_num_rows($result) == 0)
 		{
 			echo "No employee allocations found";
 		}
@@ -134,7 +165,7 @@ Resourcewise Forecast
 					<th>End Date</th>
 					<th>Action</th>
 				 </tr>";
-			while ($row = mysql_fetch_array($result)) {			
+			while ($row = mysqli_fetch_array($result)) {			
 			   echo 
 			   "<tr>
 				   <td>".$row{'pid'}."</td>
@@ -151,7 +182,7 @@ Resourcewise Forecast
 			}
 			echo "</table>";
 		}
-		mysql_close($dbhandle);		
+		mysqli_close($dbhandle);		
 	?>
 	</div>
 	</div>

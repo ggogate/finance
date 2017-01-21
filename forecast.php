@@ -27,9 +27,9 @@ Resourcewise Forecast
 	<br><br>
 	<h3>Resourcewise Forecast</h3>
 	<?php
-		$allocations = mysql_query("select * from allocations order by pid");
-		$leaves = mysql_query("select * from leaves order by start_dt");
-		$holidays = mysql_query("select * from holidays order by start_dt");
+		$allocations = mysqli_query($dbhandle, "select * from allocations order by pid");
+		$leaves = mysqli_query($dbhandle, "select * from leaves order by start_dt");
+		$holidays = mysqli_query($dbhandle, "select * from holidays order by start_dt");
 		
 		$totalHours = 0;
 		$totalAmt = 0;
@@ -64,12 +64,12 @@ Resourcewise Forecast
 			 </tr>";
 		
 		
-		while ($row = mysql_fetch_array($allocations)) {	
+		while ($row = mysqli_fetch_array($allocations)) {	
 			
 			$workDays= 0;
 			
-			$employee = mysql_query("select * from employees where id = ".$row{'emp_id'}." limit 1");
-			$emp_row = mysql_fetch_array($employee);
+			$employee = mysqli_query($dbhandle, "select * from employees where id = ".$row{'emp_id'}." limit 1");
+			$emp_row = mysqli_fetch_array($employee);
 			
 			$start = date_create($row{'start_dt'});
 			$end = date_create($row{'end_dt'});
@@ -158,7 +158,7 @@ Resourcewise Forecast
 				<td> ".$totalHours."</td>				
 				<td> $".number_format($totalAmt,2)."</td>";
 		echo "</table></div>";
-		mysql_close($dbhandle);		
+		mysqli_close($dbhandle);		
 	?>
 	</div>
 	</div>

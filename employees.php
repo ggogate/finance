@@ -27,10 +27,10 @@ Resourcewise Forecast
 			if ($_GET['action'] == "delete" && isset($_GET['id']))
 			{
 				$sql = "delete from employees where id = ".$_GET['id']." limit 1";
-				$retval = mysql_query($sql,$dbhandle);
+				$retval = mysqli_query($dbhandle,$sql);
 				if(! $retval)
 				{
-				   die('Could not delete data: ' . mysql_error());
+				   die('Could not delete data: ' . mysqli_error());
 				}
 			}
 		}
@@ -39,10 +39,10 @@ Resourcewise Forecast
 			if($_POST['action'] == "add")
 			{
 				$sql = "insert into employees (id, name) values(".$_POST['id'].",'".$_POST['name']."')";
-				$retval = mysql_query($sql,$dbhandle);
+				$retval = mysqli_query($dbhandle,$sql);
 				if(! $retval)
 				{
-				   die('Could not insert data: ' . mysql_error());
+				   die('Could not insert data: ' . mysqli_error());
 				}
 			}
 		}
@@ -59,8 +59,8 @@ Resourcewise Forecast
 	</form><br><br><br>
 	<h3>Current Employees</h3>
 	<?php
-		$result = mysql_query("select id, name from employees");
-		if (mysql_num_rows($result) == 0)
+		$result = mysqli_query($dbhandle, "select id, name from employees");
+		if (mysqli_num_rows($result) == 0)
 		{
 			echo "No employees found";
 		}
@@ -72,7 +72,7 @@ Resourcewise Forecast
 					<th>Name</th>
 					<th>Action</th>
 				 </tr>";
-			while ($row = mysql_fetch_array($result)) {			
+			while ($row = mysqli_fetch_array($result)) {			
 			   echo 
 			   "<tr>
 			   <td>".$row{'id'}."</td>
@@ -82,7 +82,7 @@ Resourcewise Forecast
 			}
 			echo "</table>";
 		}
-		mysql_close($dbhandle);		
+		mysqli_close($dbhandle);		
 	?>
 	</div>
 	</div>

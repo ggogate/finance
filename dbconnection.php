@@ -1,7 +1,7 @@
 <?php 
-$dbhandle = mysql_connect('localhost', "root", "");
+$dbhandle = mysqli_connect('localhost', "root", "", "test");
 if (!$dbhandle) {
-	die('Could not connect: ' . mysql_error());
+	die('Could not connect: ' . mysqli_connect_error());
 }
-$selected = mysql_select_db("test",$dbhandle) or die("Could not select forecasting database");
+//$selected = mysqli_select_db("test",$dbhandle) or die("Could not select forecasting database");
 ?>

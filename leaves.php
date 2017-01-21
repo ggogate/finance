@@ -3,6 +3,18 @@
 	<title> Resourcewise Forecast </title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 	<script src="app.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+	$( function() {
+		$( ".datepicker" ).datepicker(
+			{dateFormat: "yy-mm-dd"}
+		);
+	} );
+  </script>
+	
 </head>
 
 <body>
@@ -28,10 +40,10 @@ Resourcewise Forecast
 			if ($_GET['action'] == "delete" && isset($_GET['empid']))
 			{
 				$sql = "delete from leaves where emp_id = ".$_GET['empid']." limit 1";
-				$retval = mysql_query($sql,$dbhandle);
+				$retval = mysqli_query($dbhandle, $sql);
 				if(! $retval)
 				{
-				   die('Could not delete data: ' . mysql_error());
+				   die('Could not delete data: ' . mysqli_error($dbhandle));
 				}
 			}
 		}
@@ -40,10 +52,10 @@ Resourcewise Forecast
 			if($_POST['action'] == "add")
 			{
 				$sql = "insert into leaves (emp_id, start_dt, end_dt) values(".$_POST['name'].",'".$_POST['start_dt']."','".$_POST['end_dt']."')";
-				$retval = mysql_query($sql,$dbhandle);
+				$retval = mysqli_query($dbhandle, $sql);
 				if(! $retval)
 				{
-				   die('Could not delete data: ' . mysql_error());
+				   die('Could not delete data: ' . mysqli_error($dbhandle));
 				}
 			}
 		}
@@ -54,16 +66,16 @@ Resourcewise Forecast
 	<form id="add" method="post" action="leaves.php">
 		<table border="0">
 			<tr><td class="invisible">Employee Id:</td><td class="invisible"><input type="text" name="name" id="employee" placeholder="Search by Name"/></td></tr>
-			<tr><td class="invisible">Start Date:</td><td class="invisible"><input type="text" name="start_dt" placeholder="yyyy-mm-dd" autocomplete="off"/></td></tr>
-			<tr><td class="invisible">End Date:</td><td class="invisible"><input type="text" name="end_dt" placeholder="yyyy-mm-dd" autocomplete="off"/></td></tr>
+			<tr><td class="invisible">Start Date:</td><td class="invisible"><input type="text" name="start_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
+			<tr><td class="invisible">End Date:</td><td class="invisible"><input type="text" name="end_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
 			<tr><td class="invisible"></td><td class="invisible"><input type="submit" value="Save"/></td></tr>
 		</table>
 		<input type="hidden" name="action" value="add"/>
 	</form><br><br><br>
 	<h3>Current Leaves</h3>
 	<?php
-		$result = mysql_query("SELECT a.emp_id, b.name, a.start_dt, a.end_dt from leaves a, employees b where a.emp_id = b.id");
-		if (mysql_num_rows($result) == 0)
+		$result = mysqli_query($dbhandle, "SELECT a.emp_id, b.name, a.start_dt, a.end_dt from leaves a, employees b where a.emp_id = b.id");
+		if (mysqli_num_rows($result) == 0)
 		{
 			echo "No resource leaves found";
 		}
@@ -77,7 +89,7 @@ Resourcewise Forecast
 					<th>End Date</th>
 					<th></th>
 				 </tr>";
-			while ($row = mysql_fetch_array($result)) {			
+			while ($row = mysqli_fetch_array($result)) {			
 			   echo 
 			   "<tr>
 			   <td>".$row{'emp_id'}."</td>
@@ -89,7 +101,7 @@ Resourcewise Forecast
 			}
 			echo "</table>";
 		}
-		mysql_close($dbhandle);		
+		mysqli_close($dbhandle);		
 	?>
 	</div>
 	</div>

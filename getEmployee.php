@@ -8,8 +8,8 @@ $suggestion = "";
 
 if ($q !== "") 
 {
-	$result = mysql_query("select id, name from employees where name like '%".$q."%'");
-	while($row = mysql_fetch_array($result))
+	$result = mysqli_query($dbhandle, "select id, name from employees where name like '%".$q."%'");
+	while($row = mysqli_fetch_array($result))
 	{
 		$suggestion[] = $row['name'];
 	}
