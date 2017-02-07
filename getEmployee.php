@@ -1,7 +1,7 @@
 <?php
 
 include_once('dbconnection.php');
-
+header("content-type:application/json");
 //$q = $_REQUEST["q"];
 $q = $_GET['term'];
 $suggestion = "";

@@ -1,15 +1,21 @@
 <html>
 <head>
 	<title> Resourcewise Forecast </title>
-	<link rel="stylesheet" type="text/css" href="style.css"/>	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">	
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	
 	<script>
 	$( function() {
 		$( ".datepicker" ).datepicker(
 			{dateFormat: "yy-mm-dd"}
 		);
-	} );
+		$( "#name" ).autocomplete({
+        source: 'getEmployee.php'
+    });
+	});
+	
 	function configureCities(dd1, dd2){
 		switch(dd1.value){
 			case "Onshore":
@@ -34,13 +40,7 @@
 		};
 		
 	}
-	/*
-				<option value="none">--select--</option>
-				<option value="Mumbai">Mumbai</option>
-				<option value="Pune">Pune</option>
-				<option value="Chennai">Chennai</option>
-				<option value="Phoenix">Phoenix</option>
-	*/
+	
 	function createOption(ddl, text, value) {
         var opt = document.createElement('option');
         opt.value = value;
@@ -121,7 +121,7 @@ Resourcewise Forecast
 		</tr>
 		<tr>
 			<td><input type="text" size=10 name="id" /></td>
-			<td></td>			
+			<td><div class="ui-widget"><input type="text" size=20 name="name" id="name" /></div></td></td>
 			<td><input type="text" size=5 name="pid" /></td>
 			<td><select name="location" id="dd_location" onchange="configureCities(this, document.getElementById('dd_city'));">
 				<option value="none">--select--</option>
@@ -195,9 +195,12 @@ Resourcewise Forecast
 	</div>
 	</div>
 </div>
+<script>
+</script>
 <div id="footer">
 </div>
 </div>
+<script src="app.js" language="javascript" type="text/javascript"></script>
 </body>
 
 </html>

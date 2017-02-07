@@ -69,26 +69,32 @@ li a:hover {
 	
 	
 }
+
 table {
   border-collapse: collapse;
   width: auto;
 }
+
 th, td {
   padding: 5px;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid #FFF;
   font-size: 12px;
 }
+
 th{
 	background-color: #CBDCF7;
 }
+
 h3{
 }
+
 .invisible
 {
 	border: 0px;
 	text-align: right;
 }
+
 .summary
 {
 	background-color:#eee;
@@ -96,7 +102,8 @@ h3{
 
 .summaryTotal td
 {
-	background-color:#CBDCF7;
+	/*background-color:#CBDCF7;*/
+	background-color: rgb(255,192,0);
 	padding:3px;
 	font-weight: bold;
 }
