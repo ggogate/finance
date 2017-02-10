@@ -71,8 +71,8 @@ li a:hover {
 }
 
 table {
-  border-collapse: collapse;
-  width: auto;
+    border-collapse: collapse;
+    width: auto;
 }
 
 th, td {
@@ -89,9 +89,14 @@ th{
 h3{
 }
 
-.invisible
+table tr td.left-align
 {
 	border: 0px;
+	text-align: left;
+}
+table tr td.right-align
+{
+    border: 0px;
 	text-align: right;
 }
 

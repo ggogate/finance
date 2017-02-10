@@ -19,8 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `test`
 --
-CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `test`;
+CREATE DATABASE IF NOT EXISTS `revenue` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `revenue`;
 
 -- --------------------------------------------------------
 

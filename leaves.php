@@ -1,19 +1,38 @@
 <html>
 <head>
 	<title> Resourcewise Forecast </title>
-	<link rel="stylesheet" type="text/css" href="style.css"/>
-	<script src="app.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" href="/resources/demos/style.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">	
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
 	<script>
 	$( function() {
 		$( ".datepicker" ).datepicker(
 			{dateFormat: "yy-mm-dd"}
 		);
-	} );
-  </script>
+		$( "#emp_id" ).autocomplete({
+			source: 'getEmployeeById.php',
+            
+            focus: function (event, ui){
+                $("#emp_id").html(ui.item.value);
+                $("emp_name").html(ui.item.desc);
+                return false;
+            },
+            
+            select: function(event, ui) {
+                $("#emp_id").val(ui.item.value);
+                $("#emp_name").html(ui.item.desc);
+                return false;
+            }
+		})        
+        .autocomplete( "instance" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+        .append( "<div>" + item.value + "<br>" + item.desc + "</div>" )
+        .appendTo( ul );
+        }
+	});
+    
+    </script>
 	
 </head>
 
@@ -43,7 +62,7 @@ Resourcewise Forecast
 				$retval = mysqli_query($dbhandle, $sql);
 				if(! $retval)
 				{
-				   die('Could not delete data: ' . mysqli_error($dbhandle));
+				   die('Could not remove data: ' . mysqli_error($dbhandle));
 				}
 			}
 		}
@@ -51,11 +70,11 @@ Resourcewise Forecast
 		{
 			if($_POST['action'] == "add")
 			{
-				$sql = "insert into leaves (emp_id, start_dt, end_dt) values(".$_POST['name'].",'".$_POST['start_dt']."','".$_POST['end_dt']."')";
+				$sql = "insert into leaves (emp_id, start_dt, end_dt) values(".$_POST['emp_id'].",'".$_POST['start_dt']."','".$_POST['end_dt']."')";
 				$retval = mysqli_query($dbhandle, $sql);
 				if(! $retval)
 				{
-				   die('Could not delete data: ' . mysqli_error($dbhandle));
+				   die('Could not save data: ' . mysqli_error($dbhandle));
 				}
 			}
 		}
@@ -65,10 +84,11 @@ Resourcewise Forecast
 	<h3>Add Resource Leave</h3>
 	<form id="add" method="post" action="leaves.php">
 		<table border="0">
-			<tr><td class="invisible">Employee Id:</td><td class="invisible"><input type="text" name="name" id="employee" placeholder="Search by Name"/></td></tr>
-			<tr><td class="invisible">Start Date:</td><td class="invisible"><input type="text" name="start_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
-			<tr><td class="invisible">End Date:</td><td class="invisible"><input type="text" name="end_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
-			<tr><td class="invisible"></td><td class="invisible"><input type="submit" value="Save"/></td></tr>
+			<tr><td class="right-align">Employee Id:</td><td class="left-align"><div class="ui-widget"><input type="text" size=6 name="emp_id" id="emp_id" autocomplete="off"/></div></td></tr>
+            <tr><td class="right-align">Employee Name:</td><td class="left-align"><span id="emp_name"></span></td></tr>
+			<tr><td class="right-align">Start Date:</td><td class="left-align"><input type="text" name="start_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
+			<tr><td class="right-align">End Date:</td><td class="left-align"><input type="text" name="end_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
+			<tr><td class="right-align"></td><td><input type="submit" value="Save"/></td></tr>
 		</table>
 		<input type="hidden" name="action" value="add"/>
 	</form><br><br><br>

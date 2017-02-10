@@ -12,8 +12,8 @@
 			{dateFormat: "yy-mm-dd"}
 		);
 		$( "#name" ).autocomplete({
-        source: 'getEmployee.php'
-    });
+			source: 'getEmployee.php'
+		});
 	});
 	
 	function configureCities(dd1, dd2){
@@ -46,6 +46,10 @@
         opt.value = value;
         opt.text = text;
         ddl.options.add(opt);
+    }
+    
+    function updateRole(){
+    
     }
 	
 	</script>
@@ -120,7 +124,7 @@ Resourcewise Forecast
 			<th>End Date</th>
 		</tr>
 		<tr>
-			<td><input type="text" size=10 name="id" /></td>
+			<td><input type="text" size=6 name="id" /></td>
 			<td><div class="ui-widget"><input type="text" size=20 name="name" id="name" /></div></td></td>
 			<td><input type="text" size=5 name="pid" /></td>
 			<td><select name="location" id="dd_location" onchange="configureCities(this, document.getElementById('dd_city'));">
