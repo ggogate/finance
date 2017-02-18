@@ -48,8 +48,29 @@
         ddl.options.add(opt);
     }
     
-    function updateRole(){
-    
+    function updateRate(){
+		var loc = document.getElementById('dd_location').value;
+		var role = document.getElementById("id_role").value;
+		var rate = 0;
+
+		switch(loc){
+			case "Onshore":
+				switch(role){
+					case "Technical Project Manager":
+						rate = 80;
+						break;
+				}			
+				break;
+			case "Offshore":	
+				switch(role){
+					case "Technical Project Manager":
+						rate = 50;
+						break;
+				}			
+			default:
+						rate = 90;
+		}
+		alert(rate);
     }
 	
 	</script>
@@ -61,15 +82,9 @@
 Resourcewise Forecast
 </div>
 <div id="content">
-	<div id="nav">
-		<ul>
-			<li> <a href="employees.php"> Manage Employees </a></li>
-			<li> <a href="allocations.php"> Manage Allocations </a></li>
-			<li> <a href="leaves.php"> Manage Leaves </a></li>
-			<li> <a href="holidays.php"> Manage Public Holidays </a></li>
-			<li> <a href="forecast.php"> View Forecast </a></li>
-		</ul>
-	</div>
+	<?php 
+		include('menu.php');
+	?>
 	<div id="main">
 	<?php 
 		include_once('dbconnection.php');
@@ -89,6 +104,12 @@ Resourcewise Forecast
 		{
 			if($_POST['action'] == "add")
 			{
+				
+				//TODO:Validate the following - 
+				//1. PID is valid
+				//2. Dates are within PID dates
+				//3. No duplicate allocation - validate if possible - emp_id, start_dt, end_dt combination should be unique
+				
 				$sql = "insert into allocations (emp_id, pid, location, city, role, rate, start_dt, end_dt) values("
 				.$_POST['id'].","
 				.$_POST['pid'].",'"
@@ -135,7 +156,7 @@ Resourcewise Forecast
 			</select></td>
 			<td><select name="city" id="dd_city">
 			</select></td>
-			<td><select name="role">
+			<td><select name="role" id="id_role" onblur="updateRate();">
 				<option value="none">--select--</option>
 				<option value="Technical Project Manager">Technical Project Manager</option>
 				<option value="Application Architect">Application Architect</option>
@@ -155,17 +176,17 @@ Resourcewise Forecast
 	<input type="hidden" name="action" value="add"/>
 	<input type="submit" value="Save"/>
 	</form><br><br><br>
-	<h3>Current Assignments</h3>
+    <h3>Current Assignments</h3>
 	<?php
-		$result = mysqli_query($dbhandle, "select a.pid, a.emp_id, b.name, a.location, a.city, a.role, a.rate, a.start_dt, a.end_dt from allocations a, employees b where a.emp_id = b.id");
+		$result = mysqli_query($dbhandle, "select a.pid, a.emp_id, b.name, a.location, a.city, a.role, a.rate, a.start_dt, a.end_dt from allocations a, employees b where a.emp_id = b.id order by a.pid");
 		if (mysqli_num_rows($result) == 0)
 		{
 			echo "No employee allocations found";
 		}
 		else
 		{
-			echo "<table>";
-			echo "<tr>
+			echo "<table id=allocations>";
+            echo "<tr>
 					<th>Project Id</th>
 					<th>Employee Id</th>
 					<th>Name</th>
@@ -193,6 +214,7 @@ Resourcewise Forecast
 			   </tr>";
 			}
 			echo "</table>";
+			echo "<br><button>Export to CSV</button>";
 		}
 		mysqli_close($dbhandle);		
 	?>

@@ -42,15 +42,9 @@
 Resourcewise Forecast
 </div>
 <div id="content">
-	<div id="nav">
-		<ul>
-			<li> <a href="employees.php"> Manage Employees </a></li>
-			<li> <a href="allocations.php"> Manage Allocations </a></li>
-			<li> <a href="leaves.php"> Manage Leaves </a></li>
-			<li> <a href="holidays.php"> Manage Public Holidays </a></li>
-			<li> <a href="forecast.php"> View Forecast </a></li>
-		</ul>
-	</div>
+	<?php 
+		include('menu.php');
+	?>
 	<div id="main">
 	<?php 
 		include_once('dbconnection.php');
@@ -88,7 +82,7 @@ Resourcewise Forecast
             <tr><td class="right-align">Employee Name:</td><td class="left-align"><span id="emp_name"></span></td></tr>
 			<tr><td class="right-align">Start Date:</td><td class="left-align"><input type="text" name="start_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
 			<tr><td class="right-align">End Date:</td><td class="left-align"><input type="text" name="end_dt" placeholder="yyyy-mm-dd" autocomplete="off" class="datepicker"/></td></tr>
-			<tr><td class="right-align"></td><td><input type="submit" value="Save"/></td></tr>
+			<tr><td class="right-align"></td><td class="left-align"><input type="submit" value="Save"/></td></tr>
 		</table>
 		<input type="hidden" name="action" value="add"/>
 	</form><br><br><br>

@@ -75,6 +75,9 @@ table {
     width: auto;
 }
 
+tr:hover{
+  background-color:#DDD;
+}
 th, td {
   padding: 5px;
   text-align: center;

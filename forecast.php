@@ -10,15 +10,9 @@
 Resourcewise Forecast
 </div>
 <div id="content">
-	<div id="nav">
-		<ul>
-			<li> <a href="employees.php"> Manage Employees </a></li>
-			<li> <a href="allocations.php"> Manage Allocations </a></li>
-			<li> <a href="leaves.php"> Manage Leaves </a></li>
-			<li> <a href="holidays.php"> Manage Public Holidays </a></li>
-			<li> <a href="forecast.php"> View Forecast </a></li>
-		</ul>
-	</div>
+	<?php 
+		include('menu.php');
+	?>
 	<div id="main">
 	<?php 
 		include_once('dbconnection.php');
@@ -34,7 +28,7 @@ Resourcewise Forecast
 		$totalHours = 0;
 		$totalAmt = 0;
 		$workHours = array(0,0,0,0,0,0,0,0,0,0,0,0);
-		//$leaveHours = array(0,0,0,0,0,0,0,0,0,0,0,0);	
+		$leaveHours = array(0,0,0,0,0,0,0,0,0,0,0,0);
 		
 		echo "<div style='font:8pt Arial'><table>";
 		echo "<tr>
@@ -91,15 +85,62 @@ Resourcewise Forecast
 			$workHours['Oct'] = 0;
 			$workHours['Nov'] = 0;
 			$workHours['Dec'] = 0;
-			do
+            
+            $leaveHours['Jan'] = 0;
+			$leaveHours['Feb'] = 0;
+			$leaveHours['Mar'] = 0;
+			$leaveHours['Apr'] = 0;
+			$leaveHours['May'] = 0;
+			$leaveHours['Jun'] = 0;
+			$leaveHours['Jul'] = 0;
+			$leaveHours['Aug'] = 0;
+			$leaveHours['Sep'] = 0;
+			$leaveHours['Oct'] = 0;
+			$leaveHours['Nov'] = 0;
+			$leaveHours['Dec'] = 0;
+
+
+            // Create a leaves array for this employee. Later check if the current day is part of this array
+            $leave_dates = array();
+           
+            $empLeaves = mysqli_query($dbhandle, "select * from leaves where emp_id = ".$row{'emp_id'}." order by start_dt");
+            while ($rowLeave = mysqli_fetch_array($empLeaves)) {	
+                $start_leave = date_create($rowLeave['start_dt']);
+                $end_leave = date_create($rowLeave['end_dt']);
+
+                do{
+                    echo "<br> Start Date: ".date_format($start_leave,"Y-m-d");
+                    array_push($leave_dates, $start_leave);
+                    //$leave_dates[] = $start_leave;
+                    date_add ($start_leave, date_interval_create_from_date_string('1 day'));
+                }while ($start_leave <= $end_leave);
+				
+				echo "<br> Now printing array -> ";
+				
+				foreach ($leave_dates as $item) {
+    				echo "<br>".date_format($item, "Y-m-d");
+				};
+
+            }
+            
+/*            $len=count($leave_dates);
+            for ($i=0;$i<$len;$i++){
+                echo $leave_dates[$i]->format("Y-m-d"); 
+            }*/
+            
+        
+
+                  
+            do
 			{
 				if (date_format($start, 'D') != "Sat" && date_format($start, 'D') !="Sun")
 				{
 					//Now check if it's not a public holiday or the employee's leave
-					$month = date_format($start, 'M');
-					
-					$workHours[$month]=$workHours[$month]+8;
-					$workDays++;
+                    if(!in_array($start, $leave_dates, TRUE)){
+                        $month = date_format($start, 'M');				
+                        $workHours[$month]=$workHours[$month]+8;
+                        $workDays++;                        
+                    }
 				}	
 				date_add($start, date_interval_create_from_date_string('1 day'));
 			}while($start <= $end);			
